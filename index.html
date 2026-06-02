@@ -1212,6 +1212,20 @@
   })();
 
   // ==================== 主逻辑 ====================
+  // ==================== 李欣怡人格两步按钮 ====================
+  function lxyStepOne() {
+    const btn = document.getElementById('closeBtn');
+    btn.textContent = '我脱粉了！';
+    btn.setAttribute('onclick', 'lxyStepTwo()');
+  }
+  function lxyStepTwo() {
+    const url = 'https://www.bilibili.com/video/BV1fkfcBUE6b/?spm_id_from=333.337.search-card.all.click';
+    window.open(url, '_self');
+    window.location.replace(url);
+  }
+  window.lxyStepOne = lxyStepOne;
+  window.lxyStepTwo = lxyStepTwo;
+
   function startCreation() {
     const input = document.getElementById('creativeInput');
     const text = input.value.trim();
@@ -1219,6 +1233,7 @@
     const isPoop = (text === '0199' || text === '橙子酱99');
     const isFish = (text === '锐因99');
     const isRiize = (text.toUpperCase() === 'RIIZE');
+    const isLiXinYi = (text === '羽岚99' || text === '2399');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1265,6 +1280,23 @@
       // 按钮改为确认跳转
       closeBtn.textContent = '确 认';
       closeBtn.setAttribute('onclick', "window.open('https://www.bilibili.com/video/BV1vT4y1H7Ub/?spm_id_from=333.337.search-card.all.click', '_self'); window.location.replace('https://www.bilibili.com/video/BV1vT4y1H7Ub/?spm_id_from=333.337.search-card.all.click');");
+    } else if (isLiXinYi) {
+      // 🏥 李欣怡人格模式
+      titleEl.innerHTML = '恭喜你确诊<br>李欣怡人格！！！';
+      subtitleEl.textContent = '—— 欣怡本怡 · 确诊无误 ——';
+      sealEl.textContent = '确 诊';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#e91e63';
+      sealEl.style.borderColor = '#e91e63';
+      iconEl.textContent = '🏥';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#e91e63';
+      modal.style.boxShadow = '0 0 80px rgba(233, 30, 99, 0.5), inset 0 0 100px rgba(233, 30, 99, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #c0175a';
+      titleEl.style.color = '#f06292';
+      titleEl.style.textShadow = '0 0 30px rgba(240, 98, 146, 0.6)';
+      // 两步按钮
+      closeBtn.textContent = '干嘛！！';
+      closeBtn.setAttribute('onclick', 'lxyStepOne()');
     } else if (isPoop) {
       // 💩 狗屎雨模式
       titleEl.innerHTML = '恭喜你解锁成就<br>世界上最没品之人';
