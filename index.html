@@ -1219,9 +1219,7 @@
     btn.setAttribute('onclick', 'lxyStepTwo()');
   }
   function lxyStepTwo() {
-    const url = 'https://www.bilibili.com/video/BV1fkfcBUE6b/?spm_id_from=333.337.search-card.all.click';
-    window.open(url, '_self');
-    window.location.replace(url);
+    location.href = 'https://www.bilibili.com/video/BV1fkfcBUE6b/?spm_id_from=333.337.search-card.all.click';
   }
   window.lxyStepOne = lxyStepOne;
   window.lxyStepTwo = lxyStepTwo;
@@ -1237,9 +1235,7 @@
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
-      const url = 'https://www.bilibili.com/video/BV1fqVb62E3G/?spm_id_from=333.337.search-card.all.click';
-      window.open(url, '_self');
-      window.location.replace(url);
+      location.href = 'https://www.bilibili.com/video/BV1fqVb62E3G/?spm_id_from=333.337.search-card.all.click';
       return;
     }
 
@@ -1279,7 +1275,7 @@
       titleEl.style.textShadow = '0 0 30px rgba(255, 140, 66, 0.6)';
       // 按钮改为确认跳转
       closeBtn.textContent = '确 认';
-      closeBtn.setAttribute('onclick', "window.open('https://www.bilibili.com/video/BV1vT4y1H7Ub/?spm_id_from=333.337.search-card.all.click', '_self'); window.location.replace('https://www.bilibili.com/video/BV1vT4y1H7Ub/?spm_id_from=333.337.search-card.all.click');");
+      closeBtn.setAttribute('onclick', "location.href='https://www.bilibili.com/video/BV1vT4y1H7Ub/?spm_id_from=333.337.search-card.all.click'");
     } else if (isLiXinYi) {
       // 🏥 羽岚坤模式
       titleEl.innerHTML = '恭喜你确诊为：<br>羽岚坤';
