@@ -379,6 +379,27 @@
     100% { transform: scale(1); opacity: 0.7; }
   }
 
+  .btn-photo {
+    display: inline-block;
+    padding: 8px 18px;
+    margin: 5px 6px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #d4a030;
+    background: transparent;
+    border: 1px solid #8b6914;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-photo:hover {
+    background: rgba(200, 140, 40, 0.15);
+    border-color: #c9972e;
+    color: #f0c060;
+  }
+
   .btn-close {
     display: inline-block;
     padding: 10px 40px;
@@ -497,6 +518,13 @@
     <h2 class="success-title" id="successTitle">恭喜你成为<br>至尊羊角蜜网签约作者</h2>
     <p class="success-subtitle" id="successSubtitle">—— 妙笔生花 · 未来可期 ——</p>
     <div class="seal-stamp" id="sealStamp">签 约</div>
+    <div id="photoArea" style="display:none; margin-bottom:15px;">
+      <img id="photoImg" src="" style="display:none; max-width:100%; max-height:300px; border-radius:8px; border:2px solid #d4a030; margin-bottom:12px;" alt="照片">
+      <br>
+      <button class="btn-photo" id="photoBtn1" style="display:none;" onclick="showPhoto(1)">新时代奴隶主</button>
+      <button class="btn-photo" id="photoBtn2" style="display:none;" onclick="showPhoto(2)">伟大的英雄母亲</button>
+      <button class="btn-photo" id="photoBtn3" style="display:none;" onclick="showPhoto(3)">世上最美萌之人</button>
+    </div>
     <br>
     <button class="btn-close" id="closeBtn" onclick="closeModal()">朕 知 道 了</button>
   </div>
@@ -1236,6 +1264,7 @@
     const isMom = (text === '陈燕君');
     const isTuiQian = (text === '4781'); // 退钱彩蛋
     const isLuMu = (text === '橹穆99' || text === '271199');
+    const isLiQianYang = (text === '李倩杨');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1255,6 +1284,11 @@
     const closeBtn = document.getElementById('closeBtn');
     const vignette = document.getElementById('brownVignette');
     const body = document.body;
+    const photoArea = document.getElementById('photoArea');
+    const photoImg = document.getElementById('photoImg');
+    const photoBtn1 = document.getElementById('photoBtn1');
+    const photoBtn2 = document.getElementById('photoBtn2');
+    const photoBtn3 = document.getElementById('photoBtn3');
 
     // 重置按钮状态
     closeBtn.textContent = '朕 知 道 了';
@@ -1262,6 +1296,13 @@
     // 重置标题样式
     titleEl.style.color = '';
     titleEl.style.textShadow = '';
+    // 重置照片区和印章
+    sealEl.style.display = '';
+    document.getElementById('photoArea').style.display = 'none';
+    document.getElementById('photoImg').style.display = 'none';
+    document.getElementById('photoBtn1').style.display = 'none';
+    document.getElementById('photoBtn2').style.display = 'none';
+    document.getElementById('photoBtn3').style.display = 'none';
 
     if (isRiize) {
       // 🪑 RIIZE 回归公告模式
@@ -1396,6 +1437,27 @@
       titleEl.style.textShadow = '0 0 30px rgba(255, 133, 192, 0.6)';
       closeBtn.textContent = '支持助力';
       closeBtn.setAttribute('onclick', "location.href='https://www.bilibili.com/video/BV1h1kcBfEuJ/?spm_id_from=333.337.search-card.all.click'");
+    } else if (isLiQianYang) {
+      // 🌟 李倩杨模式
+      titleEl.innerHTML = '一定要天天开心！';
+      subtitleEl.textContent = '—— 萌萌萌萌萌萌萌 ——';
+      sealEl.style.display = 'none';
+      iconEl.textContent = '🌟';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#ffb8d0';
+      modal.style.boxShadow = '0 0 80px rgba(255, 184, 208, 0.5), inset 0 0 100px rgba(255, 184, 208, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #e090b0';
+      titleEl.style.color = '#ff9ec0';
+      titleEl.style.textShadow = '0 0 30px rgba(255, 158, 192, 0.6)';
+      // 照片显示区
+      photoArea.style.display = 'block';
+      photoImg.src = '';
+      photoImg.style.display = 'none';
+      // 三个按钮
+      photoBtn1.style.display = 'inline-block';
+      photoBtn2.style.display = 'inline-block';
+      photoBtn3.style.display = 'inline-block';
+      closeBtn.textContent = '关 闭';
+      closeBtn.setAttribute('onclick', 'closeModal()');
     } else {
       // 📝 普通模式
       titleEl.innerHTML = '恭喜你成为<br>至尊羊角蜜网签约作者';
@@ -1438,7 +1500,28 @@
     const overlay = document.getElementById('overlay');
     overlay.classList.remove('active');
     stopAllFx();
+    // 重置照片区
+    document.getElementById('photoArea').style.display = 'none';
+    document.getElementById('photoImg').style.display = 'none';
+    document.getElementById('photoBtn1').style.display = 'none';
+    document.getElementById('photoBtn2').style.display = 'none';
+    document.getElementById('photoBtn3').style.display = 'none';
+    document.getElementById('sealStamp').style.display = '';
   }
+
+  // ==================== 照片显示 ====================
+  function showPhoto(n) {
+    const img = document.getElementById('photoImg');
+    const paths = [
+      '',
+      'lqy_1.jpg',
+      'lqy_2.jpg',
+      'lqy_3.jpg'
+    ];
+    img.src = paths[n];
+    img.style.display = 'block';
+  }
+  window.showPhoto = showPhoto;
 
   // ==================== 键盘快捷键 ====================
   document.addEventListener('keydown', (e) => {
