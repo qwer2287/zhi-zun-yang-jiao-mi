@@ -1232,6 +1232,8 @@
     const isFish = (text === '锐因99');
     const isRiize = (text.toUpperCase() === 'RIIZE');
     const isLiXinYi = (text === '羽岚99' || text === '2399');
+    const isDad = (text === '陈石华');
+    const isMom = (text === '陈燕君');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1338,6 +1340,30 @@
       iconEl.style.fontSize = '';
       modal.style.borderColor = '#ff3030';
       modal.style.boxShadow = '0 0 80px rgba(255, 50, 30, 0.5), inset 0 0 100px rgba(255, 180, 40, 0.12), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #c03020';
+    } else if (isDad) {
+      // 👨 爸爸模式
+      titleEl.innerHTML = '恭喜你获得成就<br>全世界最好的爸爸！！！';
+      subtitleEl.textContent = '爸爸爸爸我爱你~~~';
+      sealEl.textContent = '爸 爸';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#4a90d9';
+      sealEl.style.borderColor = '#4a90d9';
+      iconEl.textContent = '❤️';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#4a90d9';
+      modal.style.boxShadow = '0 0 80px rgba(74, 144, 217, 0.5), inset 0 0 100px rgba(74, 144, 217, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #3a70b0';
+    } else if (isMom) {
+      // 👩 妈妈模式
+      titleEl.innerHTML = '恭喜你获得成就<br>全世界最好的妈妈！！！';
+      subtitleEl.textContent = '妈妈妈妈我爱你~~~';
+      sealEl.textContent = '妈 妈';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#e891a0';
+      sealEl.style.borderColor = '#e891a0';
+      iconEl.textContent = '❤️';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#e891a0';
+      modal.style.boxShadow = '0 0 80px rgba(232, 145, 160, 0.5), inset 0 0 100px rgba(232, 145, 160, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #c07080';
     } else {
       // 📝 普通模式
       titleEl.innerHTML = '恭喜你成为<br>至尊羊角蜜网签约作者';
