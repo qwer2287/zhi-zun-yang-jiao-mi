@@ -498,7 +498,7 @@
     <p class="success-subtitle" id="successSubtitle">—— 妙笔生花 · 未来可期 ——</p>
     <div class="seal-stamp" id="sealStamp">签 约</div>
     <br>
-    <button class="btn-close" onclick="closeModal()">朕 知 道 了</button>
+    <button class="btn-close" id="closeBtn" onclick="closeModal()">朕 知 道 了</button>
   </div>
 </div>
 
@@ -1218,6 +1218,7 @@
     const isSuper = (text === '诚愿99');
     const isPoop = (text === '0199' || text === '橙子酱99');
     const isFish = (text === '锐因99');
+    const isRiize = (text.toUpperCase() === 'RIIZE');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1236,10 +1237,37 @@
     const sealEl = document.getElementById('sealStamp');
     const iconEl = document.getElementById('successIcon');
     const modal = document.querySelector('.success-modal');
+    const closeBtn = document.getElementById('closeBtn');
     const vignette = document.getElementById('brownVignette');
     const body = document.body;
 
-    if (isPoop) {
+    // 重置按钮状态
+    closeBtn.textContent = '朕 知 道 了';
+    closeBtn.onclick = closeModal;
+    // 重置标题样式
+    titleEl.style.color = '';
+    titleEl.style.textShadow = '';
+
+    if (isRiize) {
+      // 🪑 RIIZE 回归公告模式
+      titleEl.innerHTML = '拉椅子将在2026年6月15日<br>携mini2辑回归！<br>请大家多多关心吧！';
+      subtitleEl.textContent = '—— RIIZE mini2辑 · 敬请期待 ——';
+      sealEl.textContent = '回 归';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#ff6a00';
+      sealEl.style.borderColor = '#ff6a00';
+      iconEl.textContent = '🪑';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#ff6a00';
+      modal.style.boxShadow = '0 0 80px rgba(255, 106, 0, 0.5), inset 0 0 100px rgba(255, 150, 50, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #e05e00';
+      titleEl.style.color = '#ff8c42';
+      titleEl.style.textShadow = '0 0 30px rgba(255, 140, 66, 0.6)';
+      // 按钮改为确认跳转
+      closeBtn.textContent = '确 认';
+      closeBtn.onclick = function() {
+        window.location.href = 'https://qwer2287.github.io/zhi-zun-yang-jiao-mi/';
+      };
+    } else if (isPoop) {
       // 💩 狗屎雨模式
       titleEl.innerHTML = '恭喜你解锁成就<br>世界上最没品之人';
       subtitleEl.textContent = '—— 屎无前例 · 遗臭万年 ——';
