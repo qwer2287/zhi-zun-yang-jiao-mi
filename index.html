@@ -302,6 +302,23 @@
     opacity: 0.85;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(192, 48, 32, 0.25);
+    transition: all 0.4s ease;
+  }
+
+  .seal-stamp.super-seal {
+    width: 100px; height: 100px;
+    border-width: 5px;
+    border-color: #ff2020;
+    color: #ff2020;
+    font-size: 22px;
+    line-height: 100px;
+    box-shadow: 0 0 30px rgba(255, 30, 20, 0.6);
+    animation: sealPulse 0.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes sealPulse {
+    0% { transform: rotate(-15deg) scale(1); box-shadow: 0 0 20px rgba(255, 30, 20, 0.5); }
+    100% { transform: rotate(-15deg) scale(1.1); box-shadow: 0 0 45px rgba(255, 30, 20, 0.85); }
   }
 
   .btn-close {
@@ -412,10 +429,10 @@
 <!-- 成功弹窗 -->
 <div class="overlay" id="overlay">
   <div class="success-modal">
-    <div class="success-icon">🏆</div>
-    <h2 class="success-title">恭喜你成为<br>至尊羊角蜜网签约作者</h2>
-    <p class="success-subtitle">—— 妙笔生花 · 未来可期 ——</p>
-    <div class="seal-stamp">签 约</div>
+    <div class="success-icon" id="successIcon">🏆</div>
+    <h2 class="success-title" id="successTitle">恭喜你成为<br>至尊羊角蜜网签约作者</h2>
+    <p class="success-subtitle" id="successSubtitle">—— 妙笔生花 · 未来可期 ——</p>
+    <div class="seal-stamp" id="sealStamp">签 约</div>
     <br>
     <button class="btn-close" onclick="closeModal()">朕 知 道 了</button>
   </div>
@@ -567,12 +584,13 @@
     }
 
     class Rocket {
-      constructor() {
+      constructor(enhanced = false) {
         this.x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
         this.y = canvas.height;
         this.targetY = Math.random() * canvas.height * 0.5 + canvas.height * 0.08;
         this.speed = Math.random() * 4 + 5;
-        this.color = randomFireworkColor();
+        this.enhanced = enhanced;
+        this.color = enhanced ? megaColor() : randomFireworkColor();
         this.trailParticles = [];
         this.exploded = false;
       }
@@ -616,17 +634,35 @@
 
       explode() {
         this.exploded = true;
-        const sparkCount = Math.floor(Math.random() * 60 + 80);
+        const baseSparks = this.enhanced ? 220 : 80;
+        const sparkCount = Math.floor(Math.random() * 60 + baseSparks);
         for (let i = 0; i < sparkCount; i++) {
-          fireworks.push(new Spark(this.x, this.y, this.color));
+          const s = new Spark(this.x, this.y, this.color);
+          if (this.enhanced) {
+            s.size = Math.random() * 6 + 2.5;
+            s.decay = Math.random() * 0.006 + 0.004;
+            s.vx *= 1.6; s.vy *= 1.6;
+          }
+          fireworks.push(s);
         }
         // 内层粒子（更亮更密）
-        for (let i = 0; i < 30; i++) {
+        const innerCount = this.enhanced ? 100 : 30;
+        for (let i = 0; i < innerCount; i++) {
           const s = new Spark(this.x, this.y, this.color);
           s.vx *= 0.5; s.vy *= 0.5;
-          s.size *= 1.5;
+          s.size *= this.enhanced ? 3 : 1.5;
           s.decay *= 0.7;
           fireworks.push(s);
+        }
+        // 震撼模式：第二圈超大光环
+        if (this.enhanced) {
+          for (let i = 0; i < 60; i++) {
+            const s = new Spark(this.x, this.y, 'rgba(255, 240, 180, 1)');
+            s.vx *= 0.25; s.vy *= 0.25;
+            s.size = Math.random() * 4 + 3;
+            s.decay = 0.004;
+            fireworks.push(s);
+          }
         }
       }
     }
@@ -647,16 +683,33 @@
       return colors[Math.floor(Math.random() * colors.length)];
     }
 
+    function megaColor() {
+      const colors = [
+        'rgba(255, 40, 20, 1)',   // 炽红
+        'rgba(255, 200, 15, 1)',  // 耀金
+        'rgba(255, 240, 50, 1)',  // 炫金
+        'rgba(255, 70, 140, 1)',  // 玫红
+        'rgba(255, 160, 20, 1)',  // 橙金
+        'rgba(255, 20, 50, 1)',   // 烈红
+        'rgba(255, 220, 80, 1)',  // 白金
+        'rgba(210, 15, 25, 1)',   // 中国红
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
     const rockets = [];
     let rocketTimer = 0;
+    let currentMode = 'normal';
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // 发射火箭
       rocketTimer++;
-      if (rocketTimer > 8 && rockets.length < 6) {
-        rockets.push(new Rocket());
+      const fireRate = currentMode === 'enhanced' ? 3 : 8;
+      const maxRockets = currentMode === 'enhanced' ? 25 : 6;
+      if (rocketTimer > fireRate && rockets.length < maxRockets) {
+        rockets.push(new Rocket(currentMode === 'enhanced'));
         rocketTimer = 0;
       }
 
@@ -675,23 +728,41 @@
       }
 
       // 停止条件：没有东西在显示
-      if (rockets.length === 0 && fireworks.length === 0 && rocketTimer > 100) {
+      const stopDelay = currentMode === 'enhanced' ? 300 : 100;
+      if (rockets.length === 0 && fireworks.length === 0 && rocketTimer > stopDelay) {
         stopFireworks();
+        currentMode = 'normal';
         return;
       }
 
       fwAnimId = requestAnimationFrame(animate);
     }
 
-    function startFireworks() {
-      if (isRunning) return;
+    function startFireworks(enhanced = false) {
+      // 停止当前烟花
+      if (fwAnimId) {
+        cancelAnimationFrame(fwAnimId);
+        fwAnimId = null;
+      }
       isRunning = true;
       rocketTimer = 0;
       fireworks = [];
       rockets.length = 0;
+      currentMode = enhanced ? 'enhanced' : 'normal';
       // 初始发射一波
-      for (let i = 0; i < 5; i++) {
-        setTimeout(() => rockets.push(new Rocket()), i * 200);
+      const initialCount = enhanced ? 15 : 5;
+      for (let i = 0; i < initialCount; i++) {
+        setTimeout(() => rockets.push(new Rocket(enhanced)), i * (enhanced ? 80 : 200));
+      }
+      // 震撼模式：后续多波齐射
+      if (enhanced) {
+        for (let wave = 1; wave <= 4; wave++) {
+          setTimeout(() => {
+            for (let i = 0; i < 10; i++) {
+              setTimeout(() => rockets.push(new Rocket(true)), i * 60);
+            }
+          }, wave * 2500);
+        }
       }
       animate();
     }
@@ -712,17 +783,45 @@
   // ==================== 主逻辑 ====================
   function startCreation() {
     const input = document.getElementById('creativeInput');
-    // 无论如何都触发成功
+    const text = input.value.trim();
+    const isSuper = (text === '诚愿99');
+
+    // 动态切换弹窗内容
+    const titleEl = document.getElementById('successTitle');
+    const subtitleEl = document.getElementById('successSubtitle');
+    const sealEl = document.getElementById('sealStamp');
+    const iconEl = document.getElementById('successIcon');
+    const modal = document.querySelector('.success-modal');
+
+    if (isSuper) {
+      titleEl.innerHTML = '世界上最有品之人';
+      subtitleEl.textContent = '—— 慧眼识珠 · 品味超群 ——';
+      sealEl.textContent = '至 尊';
+      sealEl.classList.add('super-seal');
+      iconEl.textContent = '👑';
+      modal.style.borderColor = '#ff3030';
+      modal.style.boxShadow = '0 0 80px rgba(255, 50, 30, 0.5), inset 0 0 100px rgba(255, 180, 40, 0.12), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #c03020';
+    } else {
+      titleEl.innerHTML = '恭喜你成为<br>至尊羊角蜜网签约作者';
+      subtitleEl.textContent = '—— 妙笔生花 · 未来可期 ——';
+      sealEl.textContent = '签 约';
+      sealEl.classList.remove('super-seal');
+      iconEl.textContent = '🏆';
+      modal.style.borderColor = '#d4a030';
+      modal.style.boxShadow = '0 0 60px rgba(255, 180, 60, 0.3), inset 0 0 80px rgba(200, 140, 40, 0.08), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #8b6914';
+    }
+
     const overlay = document.getElementById('overlay');
     overlay.classList.add('active');
 
-    // 启动烟花和礼炮
-    window._startFireworks();
+    // 启动烟花
+    window._startFireworks(isSuper);
 
-    // 短暂延迟后连续发射更多烟花
-    setTimeout(() => {
-      if (window._startFireworks) window._startFireworks();
-    }, 3000);
+    // 震撼模式：持续追加更多波烟花
+    if (isSuper) {
+      setTimeout(() => window._startFireworks(true), 4500);
+      setTimeout(() => window._startFireworks(true), 9000);
+    }
   }
 
   function closeModal() {
