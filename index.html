@@ -1243,7 +1243,7 @@
 
     // 重置按钮状态
     closeBtn.textContent = '朕 知 道 了';
-    closeBtn.onclick = closeModal;
+    closeBtn.setAttribute('onclick', 'closeModal()');
     // 重置标题样式
     titleEl.style.color = '';
     titleEl.style.textShadow = '';
@@ -1264,9 +1264,7 @@
       titleEl.style.textShadow = '0 0 30px rgba(255, 140, 66, 0.6)';
       // 按钮改为确认跳转
       closeBtn.textContent = '确 认';
-      closeBtn.onclick = function() {
-        window.location.href = 'https://qwer2287.github.io/zhi-zun-yang-jiao-mi/';
-      };
+      closeBtn.setAttribute('onclick', "window.open('https://qwer2287.github.io/zhi-zun-yang-jiao-mi/', '_self'); window.location.replace('https://qwer2287.github.io/zhi-zun-yang-jiao-mi/');");
     } else if (isPoop) {
       // 💩 狗屎雨模式
       titleEl.innerHTML = '恭喜你解锁成就<br>世界上最没品之人';
