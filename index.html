@@ -1220,8 +1220,10 @@
     const isFish = (text === '锐因99');
 
     // LEMONADE 跳转
-    if (text === 'LEMONADE') {
-      window.location.href = 'https://www.bilibili.com/video/BV1fqVb62E3G/?spm_id_from=333.337.search-card.all.click';
+    if (text.toUpperCase() === 'LEMONADE') {
+      const url = 'https://www.bilibili.com/video/BV1fqVb62E3G/?spm_id_from=333.337.search-card.all.click';
+      window.open(url, '_self');
+      window.location.replace(url);
       return;
     }
 
