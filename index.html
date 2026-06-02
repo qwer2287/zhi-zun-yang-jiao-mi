@@ -1234,6 +1234,7 @@
     const isLiXinYi = (text === '羽岚99' || text === '2399');
     const isDad = (text === '陈石华');
     const isMom = (text === '陈燕君');
+    const isTuiQian = (text === '4781');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1364,6 +1365,20 @@
       iconEl.style.fontSize = '70px';
       modal.style.borderColor = '#e891a0';
       modal.style.boxShadow = '0 0 80px rgba(232, 145, 160, 0.5), inset 0 0 100px rgba(232, 145, 160, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #c07080';
+    } else if (isTuiQian) {
+      // 💰 退钱模式
+      titleEl.innerHTML = '退钱！！！！';
+      subtitleEl.textContent = '—— 退！退！退！退！ ——';
+      sealEl.textContent = '退 钱';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#ff0000';
+      sealEl.style.borderColor = '#ff0000';
+      iconEl.textContent = '💸';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#ff0000';
+      modal.style.boxShadow = '0 0 80px rgba(255, 0, 0, 0.5), inset 0 0 100px rgba(255, 0, 0, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #cc0000';
+      titleEl.style.color = '#ff4444';
+      titleEl.style.textShadow = '0 0 30px rgba(255, 50, 50, 0.8)';
     } else {
       // 📝 普通模式
       titleEl.innerHTML = '恭喜你成为<br>至尊羊角蜜网签约作者';
