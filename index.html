@@ -1235,6 +1235,7 @@
     const isDad = (text === '陈石华');
     const isMom = (text === '陈燕君');
     const isTuiQian = (text === '4781'); // 退钱彩蛋
+    const isLuMu = (text === '橹穆99' || text === '271199');
 
     // LEMONADE 跳转
     if (text.toUpperCase() === 'LEMONADE') {
@@ -1379,6 +1380,22 @@
       modal.style.boxShadow = '0 0 80px rgba(255, 0, 0, 0.5), inset 0 0 100px rgba(255, 0, 0, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #cc0000';
       titleEl.style.color = '#ff4444';
       titleEl.style.textShadow = '0 0 30px rgba(255, 50, 50, 0.8)';
+    } else if (isLuMu) {
+      // 🌸 橹穆模式
+      titleEl.innerHTML = '橹穆狂法100000天！';
+      subtitleEl.textContent = '—— 橹穆99 · 狂法永存 ——';
+      sealEl.textContent = '橹 穆';
+      sealEl.classList.add('super-seal');
+      sealEl.style.color = '#ff69b4';
+      sealEl.style.borderColor = '#ff69b4';
+      iconEl.textContent = '🌸';
+      iconEl.style.fontSize = '70px';
+      modal.style.borderColor = '#ff69b4';
+      modal.style.boxShadow = '0 0 80px rgba(255, 105, 180, 0.5), inset 0 0 100px rgba(255, 105, 180, 0.1), 0 0 0 10px rgba(30, 10, 5, 0.6), 0 0 0 13px #cc5490';
+      titleEl.style.color = '#ff85c0';
+      titleEl.style.textShadow = '0 0 30px rgba(255, 133, 192, 0.6)';
+      closeBtn.textContent = '支持助力';
+      closeBtn.setAttribute('onclick', "location.href='https://www.bilibili.com/video/BV1h1kcBfEuJ/?spm_id_from=333.337.search-card.all.click'");
     } else {
       // 📝 普通模式
       titleEl.innerHTML = '恭喜你成为<br>至尊羊角蜜网签约作者';
